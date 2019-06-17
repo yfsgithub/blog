@@ -35,3 +35,7 @@ hexo deploy
 // ERROR Deployer not found: git
 npm install --save hexo-deployer-git
 ```
+7. 主题安装, 请参考
+[BlueLake主题](https://github.com/chaooo/hexo-theme-BlueLake)
+
+8. 修改后重新deploy, 然后在码云上更新Gitee Pages服务
