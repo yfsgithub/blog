@@ -13,8 +13,10 @@ timezone:
 
 # URL
 ## If your site is put in a subdirectory, set url as 'http://yoursite.com/child' and root as '/child/'
-url: http://yfs_git.gitee.io
-root: /blog/
+# url: http://yfs_git.gitee.io
+# root: /blog/
+url: http://cblog.starsmark.com
+root: /
 permalink: :year/:month/:day/:title/
 permalink_defaults:
 
@@ -82,5 +84,7 @@ stylus:
 ## Docs: https://hexo.io/docs/deployment.html
 deploy:
   type: git
-  repo: https://gitee.com/yfs_git/blog.git
-  branch: osc-pages
+  # repo: https://gitee.com/yfs_git/blog.git
+  # branch: osc-pages
+  repo: https://git.dev.tencent.com/starsmark/blog.git
+  branch: master
