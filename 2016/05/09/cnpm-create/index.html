@@ -1,0 +1,95 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta name="generator" content="Hexo 3.9.0"><meta http-equiv="content-type" content="text/html; charset=utf-8"><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport"><meta content="yes" name="apple-mobile-web-app-capable"><meta content="black-translucent" name="apple-mobile-web-app-status-bar-style"><meta content="telephone=no" name="format-detection"><meta name="description" content="这是实际工作中遇到问题的总结"><meta name="keywords" content="幻境"><title>cnpm搭建公司内部模块管理 | 幻境的博客</title><link rel="stylesheet" type="text/css" href="//fonts.loli.net/css?family=Source+Code+Pro"><link rel="stylesheet" type="text/css" href="/blog/css/style.css?v=2.0.3"><link rel="stylesheet" type="text/css" href="/blog/css/highlight.css?v=2.0.3"><link rel="Shortcut Icon" href="/blog/favicon.ico"><link rel="bookmark" href="/blog/favicon.ico"><link rel="apple-touch-icon" href="/blog/apple-touch-icon.png"><link rel="apple-touch-icon-precomposed" href="/blog/apple-touch-icon.png"></head><body><div class="body_container"><div id="header"><div class="site-name"><h1 class="hidden">cnpm搭建公司内部模块管理</h1><a id="logo" href="/blog/.">幻境的博客</a><p class="description">技术积累</p></div><div id="nav-menu"><a href="/blog/." class="current"><i class="fa fa-home"> 首页</i></a><a href="/blog/archives/"><i class="fa fa-archive"> 归档</i></a><a href="/blog/about/"><i class="fa fa-user"> 关于</i></a><a href="/blog/atom.xml"><i class="fa fa-rss"> 订阅</i></a></div><div id="search-form"><div id="result-mask" class="hide"></div><label><input id="search-key" type="text" autocomplete="off" placeholder="搜索"></label><div id="result-wrap" class="hide"><div id="search-result"></div></div><div class="hide"><template id="search-tpl"><div class="item"><a href="/{path}" title="{title}"><div class="title">{title}</div><div class="time">{date}</div><div class="tags">{tags}</div></a></div></template></div></div></div><div id="layout" class="layout-g"><div class="layout-l"><div class="content_container"><div class="post"><h1 class="post-title">cnpm搭建公司内部模块管理</h1><div class="post-meta"><a href="/blog/2016/05/09/cnpm-create/#comments" class="comment-count"></a><p><span class="date">May 09, 2016</span><span><a href="/blog/categories/包管理/" class="category">包管理</a></span><span><i id="busuanzi_container_page_pv"><i id="busuanzi_value_page_pv"></i><i>点击</i></i></span></p></div><div class="post-content"><p>参考资料：</p>
+<blockquote>
+<p><a href="http://segmentfault.com/a/1190000000368906" target="_blank" rel="noopener">http://segmentfault.com/a/1190000000368906</a><br><a href="http://blog.fens.me/nodejs-cnpm-npm/" target="_blank" rel="noopener">http://blog.fens.me/nodejs-cnpm-npm/</a><br><a href="http://www.cnblogs.com/wyzfzu/p/4149310.html" target="_blank" rel="noopener">http://www.cnblogs.com/wyzfzu/p/4149310.html</a><br><a href="http://www.tuicool.com/articles/JZNzY3j" target="_blank" rel="noopener">http://www.tuicool.com/articles/JZNzY3j</a></p>
+<p><a href="https://docs.npmjs.com/getting-started/scoped-packages" target="_blank" rel="noopener">https://docs.npmjs.com/getting-started/scoped-packages</a></p>
+</blockquote>
+<p><em>本人是在windows7上搭建，上面地址有linux上搭建方法请参考</em></p>
+<p><strong>获取代码</strong></p>
+<pre><code>git clone git://github.com/fengmk2/cnpmjs.org.git $HOME/cnpmjs.org
+
+cd $HOME/cnpmjs.org
+
+或者：git clone https://github.com/cnpm/cnpmjs.org.git</code></pre><p><strong>创建MySQL表</strong></p>
+<p>1.在mysql中先创建数据库cnpmjs</p>
+<pre><code>drop database if exists cnpmjs;
+create database cnpmjs;</code></pre><p>2.打开C:\Users\Administrator\cnpmjs.org\docs</p>
+<pre><code>use cnpmjs;
+source C:\Users\Administrator\cnpmjs.org\docs
+show tables;</code></pre><p><strong>数据库表执行完成后，修改C:\Users\Administrator\cnpmjs.org\config下的index.js配置文件</strong></p>
+<ul>
+<li>注释掉bindingHost: ‘127.0.0.1,其他电脑也可以访问</li>
+<li>配置登录用户名</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">admins: &#123;</span><br><span class="line">	// name: email</span><br><span class="line">	admin: &apos;admin@cnpmjs.org&apos;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>database:</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">db: &apos;cnpmjs&apos;,</span><br><span class="line">   username: &apos;root&apos;,</span><br><span class="line">   password: &apos;root&apos;,</span><br><span class="line">   dialect: &apos;mysql&apos;,</span><br><span class="line">   host: &apos;127.0.0.1&apos;,</span><br><span class="line">   port: 3306,</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>registry配置</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">enablePrivate: true,</span><br><span class="line">scopes: [ &apos;@cnpm&apos;, &apos;@cnpmtest&apos;, &apos;@cnpm-test&apos; ],</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>sync配置</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">synoModel: &apos;exist&apos;</span><br></pre></td></tr></table></figure>
+
+<p><strong>升级node,npm</strong></p>
+<p>1.node最新版本在官网下载升级</p>
+<p><a href="http://nodejs.cn/" title="http://nodejs.cn/" target="_blank" rel="noopener">http://nodejs.cn/</a></p>
+<p>2.npm通过下面命令即可升级</p>
+<p><code>npm install npm -g</code></p>
+<p><strong>安装项目依赖包</strong></p>
+<p>1.打开cmd</p>
+<p>2.切换到C:\Users\Administrator\cnpmjs.org目录</p>
+<p><code>cd /dC:\Users\Administrator\cnpmjs.org</code></p>
+<p>3.执行：<code>npm install</code>命令，nodejs 会根据package.json进行依赖包的安装</p>
+<p><strong>一切准备完成，启动程序</strong></p>
+<p><code>cd /dC:\Users\Administrator\cnpmjs.org</code></p>
+<p>1.启动</p>
+<p><code>node dispatch.js</code></p>
+<p>2.通过浏览器访问，CNPM服务：<a href="http://localhost:7002" target="_blank" rel="noopener">http://localhost:7002</a></p>
+<p><strong>从npm下载模块</strong></p>
+<p>在页面搜索<code>log4js</code>模块</p>
+<p>然后点击页面sync链接即可同步到本地</p>
+<p><strong>安装使用模块</strong></p>
+<p>1.安装cnpm模块<code>npm install cnpm -g</code></p>
+<p>2.指定私有库</p>
+<p>查看<code>cnpm config list</code></p>
+<p>设置<code>cnpm config set registry http://localhost:7001</code></p>
+<p>3.使用<code>cnpm install -g log4js</code></p>
+<p><strong>上传私有模块</strong></p>
+<p>1.用户（配置文件中的）</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">admins: &#123;</span><br><span class="line">	admin: &apos;admin@cnpmjs.org&apos;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>2.设置密码</p>
+<p><code>cnpm adduser --registry=http://localhost:7001</code></p>
+<p><code>Username:admin</code></p>
+<p><code>password:admin</code></p>
+<p><code>Email:admin@cnpmjs.org</code></p>
+<p>3.用上面密码登录</p>
+<p><code>cnpm login --registry=http://localhost:7001</code></p>
+<p>4.设置scope(配置文件中）</p>
+<p><code>scopes: [ &#39;@cnpm&#39;, &#39;@cnpmtest&#39;, &#39;@cnpm-test&#39; ]</code></p>
+<p>5.生成自己的模块</p>
+<ul>
+<li>新建目录：C:\Users\Administrator\self-test-module</li>
+<li>cd /dC:\Users\Administrator\self-test-module</li>
+</ul>
+<p><code>cnpm init --scope=cnpmtest</code></p>
+<ul>
+<li><p>package.json文件已经生成</p>
+</li>
+<li><p>自己写一个index.js</p>
+</li>
+<li><p>发布：<code>cnpm publish</code></p>
+</li>
+</ul>
+<p>6.这样在页面就可以搜到self-test-module模块</p>
+<p><code>cnpm install self-test-module</code>安装</p>
+<p>程序中使用：</p>
+<p><code>require(&#39;@cnpmtest/self-test-module&#39;</code></p>
+</div><div class="post-copyright"><blockquote><p>原文作者: liufl</p><p>原文链接: <a href="http://cblog.starsmark.com/2016/05/09/cnpm-create/">http://cblog.starsmark.com/2016/05/09/cnpm-create/</a></p><p>版权声明: 转载请注明出处(必须保留作者署名及链接)</p></blockquote></div><div class="tags"><a href="/blog/tags/npm/">npm</a></div><div class="post-share"><div class="social-share"><span>分享到:</span></div></div><div class="post-nav"><a href="/blog/2016/05/10/mysql-pk/" class="pre">mysql更改表主键错误</a></div><div id="comments"></div></div></div></div><div class="layout-r"><div id="sidebar"><div class="search-pla"></div><div id="toc" class="widget"><div class="widget-title"><i class="fa fa-fei">文章目录</i></div></div><div class="widget"><div class="widget-title"><i class="fa fa-xie"> 最新文章</i></div><ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/blog/2019/06/17/blogCreate/">博客搭建</a></li><li class="post-list-item"><a class="post-list-link" href="/blog/2019/06/17/hello-world/">Hello World</a></li><li class="post-list-item"><a class="post-list-link" href="/blog/2016/06/10/java-eclipse-key/">eclipse常用快捷键</a></li><li class="post-list-item"><a class="post-list-link" href="/blog/2016/06/03/vim-operate/">vim常用操作</a></li><li class="post-list-item"><a class="post-list-link" href="/blog/2016/06/03/linux-command/">linux常用命令</a></li><li class="post-list-item"><a class="post-list-link" href="/blog/2016/05/29/jdbc-util/">jdbc获取连接工具</a></li><li class="post-list-item"><a class="post-list-link" href="/blog/2016/05/29/java-compiler-error/">java compiler match error</a></li><li class="post-list-item"><a class="post-list-link" href="/blog/2016/05/18/maven-use/">maven使用说明</a></li><li class="post-list-item"><a class="post-list-link" href="/blog/2016/05/10/vbx-extend/">virtualbox安装扩展</a></li><li class="post-list-item"><a class="post-list-link" href="/blog/2016/05/10/vbx-install/">virtualbox 安装</a></li></ul></div><div class="widget"><div class="widget-title"><i class="fa fa-gui"> 分类</i></div><ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/blog/categories/java/">java</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/blog/categories/javaerror/">javaerror</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/blog/categories/包管理/">包管理</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/blog/categories/数据库/">数据库</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/blog/categories/文档/">文档</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/blog/categories/系统/">系统</a><span class="category-list-count">4</span></li></ul></div><div class="widget"><div class="widget-title"><i class="fa fa-biao"> 标签</i></div><div class="tagcloud"><a href="/blog/tags/javaerror/" style="font-size: 15px;">javaerror</a> <a href="/blog/tags/搭建/" style="font-size: 15px;">搭建</a> <a href="/blog/tags/java/" style="font-size: 15px;">java</a> <a href="/blog/tags/linux/" style="font-size: 15px;">linux</a> <a href="/blog/tags/virtualbox/" style="font-size: 15px;">virtualbox</a> <a href="/blog/tags/doc/" style="font-size: 15px;">doc</a> <a href="/blog/tags/vim/" style="font-size: 15px;">vim</a> <a href="/blog/tags/mysql/" style="font-size: 15px;">mysql</a> <a href="/blog/tags/npm/" style="font-size: 15px;">npm</a></div></div><div class="widget"><div class="widget-title"><i class="fa fa-archive"> 归档</i></div><ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/blog/archives/2019/06/">六月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/blog/archives/2016/06/">六月 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/blog/archives/2016/05/">五月 2016</a></li></ul></div><div class="widget"><div class="widget-title"><i class="fa fa-you"> 友情链接</i></div><ul></ul><a href="http://www.example1.com/" title="site-name1" target="_blank">site-name1</a><ul></ul><a href="http://www.example2.com/" title="site-name2" target="_blank">site-name2</a><ul></ul><a href="http://www.example3.com/" title="site-name3" target="_blank">site-name3</a></div></div></div></div><a id="totop" href="#top"></a><div id="footer"><div class="footer-info"><p><a href="/blog/baidusitemap.xml">网站地图</a> |  <a href="/blog/atom.xml">订阅本站</a> |  <a href="/blog/about/">联系博主</a></p><p>本站总访问量：<i id="busuanzi_container_site_pv"><i id="busuanzi_value_site_pv"></i></i>次，本站总访客数:<i id="busuanzi_container_site_uv"><i id="busuanzi_value_site_uv"></i></i>人</p><p><span> Copyright &copy;<a href="/blog/." rel="nofollow">liufl.</a></span><span> Theme by<a rel="nofollow" target="_blank" href="https://github.com/chaooo/hexo-theme-BlueLake"> BlueLake.</a></span><span> Count by<a href="http://busuanzi.ibruce.info/"> busuanzi.</a></span><span> Powered by<a rel="nofollow" target="_blank" href="https://hexo.io"> Hexo.</a></span></p></div></div></div><script src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" async></script><script type="text/javascript" src="/blog/js/search.json.js?v=2.0.3"></script><script type="text/javascript" src="/blog/js/toctotop.js?v=2.0.3" async></script><link rel="stylesheet" type="text/css" href="/blog/share/css/share.css"><script type="text/javascript" src="/blog/share/js/social-share.js" charset="utf-8"></script><script type="text/javascript" src="/blog/share/js/qrcode.js" charset="utf-8"></script></body></html>
